@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   app: {
     baseURL: '/pd2-map-dmg-calculator/',
+    // names with underscore (_nuxt) messes with github pages.
+    // it might consider it jekyll stuff.
+    buildAssetsDir: 'assets',
   },
   modules: [
     '@nuxtjs/tailwindcss',
