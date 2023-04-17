@@ -51,11 +51,14 @@ const immuneAfterPierce = computed(() => resAfterPierce.value > 99)
 
 <template>
   <div :class="[colorClass, !active && 'opacity-20']">
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center" :class="{ 'text-xs': dmg }">
       <Icon name="ph:shield" />
       <div :class="{ 'font-bold': immuneBeforePierce }">{{ res }}</div>
-      <Icon name="ph:arrow-right" />
-      <div :class="{ 'font-bold': immuneAfterPierce }">{{ resAfterPierce }}</div>
+      <Icon name="ph:arrow-right" :class="{ 'opacity-20': active && !pierceNonBreaking && !pierceBreaking }" />
+      <div :class="{
+        'font-bold': immuneAfterPierce,
+        'opacity-20': active && !pierceNonBreaking && !pierceBreaking
+      }">{{ resAfterPierce }}</div>
     </div>
     <div class="flex flex-row items-center" :class="{ 'opacity-20': active && !dmg }">
       <Icon name="ph:sword" />
