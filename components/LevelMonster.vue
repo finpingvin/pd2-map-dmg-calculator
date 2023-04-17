@@ -65,8 +65,8 @@ const immuneAfterPierce = computed(() => resAfterPierce.value > 99)
       <span>{{ Math.round(
         calcDmg(dmg, res, 0, 0)
       ) }}</span>
-      <Icon name="ph:arrow-right" />
-      <span>{{ Math.round(
+      <Icon name="ph:arrow-right" :class="{ 'opacity-20': active && !pierceNonBreaking && !pierceBreaking }" />
+      <span :class="{ 'opacity-20': active && !pierceNonBreaking && !pierceBreaking }">{{ Math.round(
         calcDmg(dmg, res, pierceNonBreaking, pierceBreaking)
       ) }}</span>
     </div>
