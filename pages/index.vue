@@ -54,7 +54,18 @@ const hasDmg = computed(() => (
 <template>
   <div class="flex h-screen">
     <div class="bg-black text-white w-64 overflow-y-scroll pl-2 pr-2 border-black border-l-solid border-l-1">
-      <form>
+      <dl class="text-sm mt-2">
+        <dt class="font-bold">Damage</dt>
+        <dd class="ml-4">Your sheet damage</dd>
+
+        <dt class="font-bold mt-2">Non breaking pierce</dt>
+        <dd class="ml-4">The sum of pierce that does not break immunities (e.g. facets)</dd>
+
+        <dt class="font-bold mt-2">Breaking pierce</dt>
+        <dd class="ml-4">The sum of pierce that <em>does</em> break immunities (e.g. Conviction)</dd>
+      </dl>
+
+      <form class="mt-6">
         <table class="table-auto text-sm">
           <thead>
             <tr class="tracking-tight text-xs">
