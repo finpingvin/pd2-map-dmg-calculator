@@ -102,12 +102,12 @@ const hasDmg = computed(() => (
         <template v-for="(levelsInTier, tier) in levelsGroupedByTier">
           <h3>Tier {{ tier }}</h3>
           <ul class="ml-2">
-            <li v-for="level in levelsInTier">
+            <li v-for="level in levelsInTier" class="flex items-center">
               <label>
                 <input type="checkbox" :value="level.displayName" v-model="selectedLevelNames" class="mr-1">
-                <a v-if="selectedLevelNames.includes(level.displayName)" class="underline" :href="`#${level.displayName}`">{{ level.displayName }}</a>
-                <template v-else>{{ level.displayName }}</template>
+                {{ level.displayName }}
               </label>
+              <a v-if="selectedLevelNames.includes(level.displayName)" class="underline ml-1 text-xs" :href="`#${level.displayName}`">link</a>
             </li>
           </ul>
         </template>
