@@ -19,7 +19,7 @@
       <!-- Phys dmg -->
       <input
         :value="dmg"
-        @input="$emit('update:dmg', ($event.target as HTMLInputElement).value)"
+        @input="$emit('update:dmg', ($event.target as HTMLInputElement).value || 0)"
         type="text"
         class="w-full text-black text-sm p-1"
         inputmode="numeric"
@@ -31,7 +31,7 @@
         <!-- Phys pierce non-breaking -->
         <input
           :value="pierceNonBreaking"
-          @input="$emit('update:pierceNonBreaking', ($event.target as HTMLInputElement).value)"
+          @input="$emit('update:pierceNonBreaking', ($event.target as HTMLInputElement).value || 0)"
           type="text"
           class="w-full text-black text-sm p-1 pr-4"
           inputmode="numeric"
@@ -44,7 +44,7 @@
         <!-- Phys pierce breaking -->
         <input
           :value="pierceBreaking"
-          @input="$emit('update:pierceBreaking', ($event.target as HTMLInputElement).value)"
+          @input="$emit('update:pierceBreaking', ($event.target as HTMLInputElement).value || 0)"
           type="text"
           class="w-full text-black text-sm p-1 pr-4"
           inputmode="numeric"

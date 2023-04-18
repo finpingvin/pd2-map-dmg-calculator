@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { calcDmg } from '~/utils/calculations';
 import levels from '../maps.json'
 
 type Levels = typeof levels
@@ -130,12 +131,13 @@ const hasDmg = computed(() => (
                 <th class="text-start tracking-tight text-xs w-20">Light</th>
                 <th class="text-start tracking-tight text-xs w-20">Cold</th>
                 <th class="text-start tracking-tight text-xs w-20">Poison</th>
+                <th class="text-start tracking-tight text-xs w-20">Sum Damage</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="monster in level.monsters" :key="monster.displayName">
-              <td class="border-b border-black pb-1 pt-2 pr-8">{{ monster.displayName }}</td>
-              <td class="border-b border-black pb-1 pt-2 pr-8">
+              <td class="align-bottom border-b border-black pb-1 pt-2 pr-8">{{ monster.displayName }}</td>
+              <td class="align-bottom border-b border-black pb-1 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(physDmg)"
                   :res="monster.physRes"
@@ -145,7 +147,7 @@ const hasDmg = computed(() => (
                   colorClass="text-stone-500"
                 />
               </td>
-              <td class="border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(magicDmg)"
                   :res="monster.magicRes"
@@ -155,7 +157,7 @@ const hasDmg = computed(() => (
                   colorClass="text-violet-500"
                 />
               </td>
-              <td class="border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(fireDmg)"
                   :res="monster.fireRes"
@@ -165,7 +167,7 @@ const hasDmg = computed(() => (
                   colorClass="text-red-500"
                 />
               </td>
-              <td class="border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(lightningDmg)"
                   :res="monster.lightningRes"
@@ -175,7 +177,7 @@ const hasDmg = computed(() => (
                   colorClass="text-yellow-600"
                 />
               </td>
-              <td class="border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(coldDmg)"
                   :res="monster.coldRes"
@@ -185,7 +187,7 @@ const hasDmg = computed(() => (
                   colorClass="text-blue-500"
                 />
               </td>
-              <td class="border-b border-black pb-2 pt-2">
+              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(poisonDmg)"
                   :res="monster.poisonRes"
@@ -194,6 +196,30 @@ const hasDmg = computed(() => (
                   :pierceBreaking="poisonPierceBreaking"
                   colorClass="text-green-600"
                 />
+              </td>
+              <td class="align-bottom border-b border-black pb-2 pt-2">
+                <div class="flex flex-row items-center" :class="{ 'opacity-20': !hasDmg }">
+                  <Icon name="ph:sword" />
+                  {{
+                    Math.round(
+                      calcDmg(physDmg, monster.physRes, 0, 0) +
+                      calcDmg(fireDmg, monster.fireRes, 0, 0) +
+                      calcDmg(lightningDmg, monster.lightningRes, 0, 0) +
+                      calcDmg(coldDmg, monster.coldRes, 0, 0) +
+                      calcDmg(poisonDmg, monster.poisonRes, 0, 0)
+                    )
+                  }}
+                  <Icon name="ph:arrow-right" />
+                  {{
+                    Math.round(
+                      calcDmg(physDmg, monster.physRes, physPierceNonBreaking, physPierceBreaking) +
+                      calcDmg(fireDmg, monster.fireRes, firePierceNonBreaking, firePierceBreaking) +
+                      calcDmg(lightningDmg, monster.lightningRes, lightningPierceNonBreaking, lightningPierceBreaking) +
+                      calcDmg(coldDmg, monster.coldRes, coldPierceNonBreaking, coldPierceBreaking) +
+                      calcDmg(poisonDmg, monster.poisonRes, poisonPierceNonBreaking, poisonPierceBreaking)
+                    )
+                  }}
+                </div>
               </td>
             </tr>
           </tbody>
