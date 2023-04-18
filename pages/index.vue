@@ -158,7 +158,7 @@ const hasDmg = computed(() => (
                   :dmg="physDmg"
                   :pierceNonBreaking="physPierceNonBreaking"
                   :pierceBreaking="physPierceBreaking"
-                  colorClass="text-stone-500"
+                  colorClass="text-stone-500 dark:text-stone-400"
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -212,7 +212,7 @@ const hasDmg = computed(() => (
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2">
-                <div class="flex flex-row items-center" :class="{ 'opacity-20': !hasDmg }">
+                <div class="flex flex-row items-center" :class="{ 'opacity-10': !hasDmg }">
                   <Icon name="ph:sword" />
                   {{
                     Math.round(
