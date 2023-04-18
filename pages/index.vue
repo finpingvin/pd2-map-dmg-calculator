@@ -212,7 +212,7 @@ const hasDmg = computed(() => (
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2">
-                <div class="flex flex-row items-center" :class="{ 'opacity-10': !hasDmg }">
+                <div class="flex flex-row items-center" :class="{ 'opacity-15': !hasDmg }">
                   <Icon name="ph:sword" />
                   {{
                     Math.round(

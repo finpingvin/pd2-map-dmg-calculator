@@ -19,23 +19,23 @@ const immuneAfterPierce = computed(() => resAfterPierce.value > 99)
 </script>
 
 <template>
-  <div :class="[colorClass, !active && 'opacity-10']">
+  <div :class="[colorClass, !active && 'opacity-15']">
     <div class="flex flex-row items-center" :class="{ 'text-xs': dmg }">
       <Icon name="ph:shield" />
       <div :class="{ 'font-bold': immuneBeforePierce }">{{ res }}</div>
-      <Icon name="ph:arrow-right" :class="{ 'opacity-10': active && !pierceNonBreaking && !pierceBreaking }" />
+      <Icon name="ph:arrow-right" :class="{ 'opacity-15': active && !pierceNonBreaking && !pierceBreaking }" />
       <div :class="{
         'font-bold': immuneAfterPierce,
-        'opacity-10': active && !pierceNonBreaking && !pierceBreaking
+        'opacity-15': active && !pierceNonBreaking && !pierceBreaking
       }">{{ resAfterPierce }}</div>
     </div>
-    <div class="flex flex-row items-center" :class="{ 'opacity-10': active && !dmg }">
+    <div class="flex flex-row items-center" :class="{ 'opacity-15': active && !dmg }">
       <Icon name="ph:sword" />
       <span>{{ Math.round(
         calcDmg(dmg, res, 0, 0)
       ).toLocaleString() }}</span>
-      <Icon name="ph:arrow-right" :class="{ 'opacity-10': active && !pierceNonBreaking && !pierceBreaking }" />
-      <span :class="{ 'opacity-10': active && !pierceNonBreaking && !pierceBreaking }">{{ Math.round(
+      <Icon name="ph:arrow-right" :class="{ 'opacity-15': active && !pierceNonBreaking && !pierceBreaking }" />
+      <span :class="{ 'opacity-15': active && !pierceNonBreaking && !pierceBreaking }">{{ Math.round(
         calcDmg(dmg, res, pierceNonBreaking, pierceBreaking)
       ).toLocaleString() }}</span>
     </div>

@@ -7,5 +7,12 @@ module.exports = {
   ],
   plugins: [
     require('@tailwindcss/forms'),
-  ]
+  ],
+  theme: {
+    extend: {
+      opacity: {
+        '15': 0.15,
+      },
+    },
+  },
 }
