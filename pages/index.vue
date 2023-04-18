@@ -150,8 +150,8 @@ const hasDmg = computed(() => (
           </thead>
           <tbody>
             <tr v-for="monster in level.monsters" :key="monster.displayName">
-              <td class="align-bottom border-b border-black dark:border-white pb-1 pt-2 pr-8">{{ monster.displayName }}</td>
-              <td class="align-bottom border-b border-black dark:border-white pb-1 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.displayName }}</td>
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(physDmg)"
                   :res="monster.physRes"
