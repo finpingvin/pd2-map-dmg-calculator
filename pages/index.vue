@@ -3,6 +3,7 @@ import { calcDmg } from '~/utils/calculations';
 import levels from '../maps.json'
 
 type Levels = typeof levels
+type Level = Levels[number]
 type LevelsGroupedByTier = {
   [key: number]: Levels
 }
@@ -28,17 +29,19 @@ const poisonPierceBreaking = ref(0);
 
 const selectedLevelNames = ref(['Arreat Battlefield'])
 
-const selectedLevels = computed(() => (
-  levels.filter((l) => selectedLevelNames.value.includes(l.displayName))
-))
+const sortLevels = (l1: Level, l2: Level) => (
+  l1.tier - l2.tier || l1.displayName.localeCompare(l2.displayName)
+)
+
 const sortedLevels = computed(() => (
-  selectedLevels.value.slice(0).sort((l1, l2) => (
-    l1.tier - l2.tier || l1.displayName.localeCompare(l2.displayName)
-  ))
+  levels.slice(0).sort(sortLevels)
+))
+const selectedLevels = computed(() => (
+  sortedLevels.value.filter((l) => selectedLevelNames.value.includes(l.displayName))
 ))
 
 const levelsGroupedByTier = computed(() => (
-  levels.reduce((acc, curr) => {
+  sortedLevels.value.reduce((acc, curr) => {
     if (!acc[curr.tier]) {
       acc[curr.tier] = []
     }
@@ -127,7 +130,7 @@ const hasDmg = computed(() => (
     </div>
 
     <div class="grow pl-2 overflow-y-scroll border-slate-500 border-l-solid border-l">
-      <div v-for="level in sortedLevels" :key="level.displayName" :id="level.displayName" class="mb-8 text-sm">
+      <div v-for="level in selectedLevels" :key="level.displayName" :id="level.displayName" class="mb-8 text-sm">
         <h1 class="text-lg tracking-wide font-bold">
           {{ level.displayName }}
           <span class="text-gray-500 text-md tracking-tight ml-2">Tier {{ level.tier }}</span>
