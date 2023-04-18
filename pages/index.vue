@@ -129,7 +129,7 @@ const hasDmg = computed(() => (
       </nav>
     </div>
 
-    <div class="grow pl-2 overflow-y-scroll border-slate-500 border-l-solid border-l">
+    <div class="grow pl-2 overflow-y-scroll border-slate-500 border-l-solid border-l bg-white dark:bg-slate-800 text-black dark:text-white">
       <div v-for="level in selectedLevels" :key="level.displayName" :id="level.displayName" class="mb-8 text-sm">
         <h1 class="text-lg tracking-wide font-bold">
           {{ level.displayName }}
@@ -138,20 +138,20 @@ const hasDmg = computed(() => (
         <table class="table-fixed border-separate border-spacing-y-0 border-spacing-x-0">
           <thead>
             <tr>
-                <th class="text-start tracking-tight text-xs">Monster</th>
-                <th class="text-start tracking-tight text-xs w-20">Phys</th>
-                <th class="text-start tracking-tight text-xs w-20">Magic</th>
-                <th class="text-start tracking-tight text-xs w-20">Fire</th>
-                <th class="text-start tracking-tight text-xs w-20">Light</th>
-                <th class="text-start tracking-tight text-xs w-20">Cold</th>
-                <th class="text-start tracking-tight text-xs w-20">Poison</th>
-                <th class="text-start tracking-tight text-xs w-20">Sum Damage</th>
+                <th class="text-start text-xs">Monster</th>
+                <th class="text-start text-xs w-20">Phys</th>
+                <th class="text-start text-xs w-20">Magic</th>
+                <th class="text-start text-xs w-20">Fire</th>
+                <th class="text-start text-xs w-20">Light</th>
+                <th class="text-start text-xs w-20">Cold</th>
+                <th class="text-start text-xs w-20">Poison</th>
+                <th class="text-start text-xs w-20">Sum Damage</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="monster in level.monsters" :key="monster.displayName">
-              <td class="align-bottom border-b border-black pb-1 pt-2 pr-8">{{ monster.displayName }}</td>
-              <td class="align-bottom border-b border-black pb-1 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-1 pt-2 pr-8">{{ monster.displayName }}</td>
+              <td class="align-bottom border-b border-black dark:border-white pb-1 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(physDmg)"
                   :res="monster.physRes"
@@ -161,7 +161,7 @@ const hasDmg = computed(() => (
                   colorClass="text-stone-500"
                 />
               </td>
-              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(magicDmg)"
                   :res="monster.magicRes"
@@ -171,7 +171,7 @@ const hasDmg = computed(() => (
                   colorClass="text-violet-500"
                 />
               </td>
-              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(fireDmg)"
                   :res="monster.fireRes"
@@ -181,7 +181,7 @@ const hasDmg = computed(() => (
                   colorClass="text-red-500"
                 />
               </td>
-              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(lightningDmg)"
                   :res="monster.lightningRes"
@@ -191,7 +191,7 @@ const hasDmg = computed(() => (
                   colorClass="text-yellow-600"
                 />
               </td>
-              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(coldDmg)"
                   :res="monster.coldRes"
@@ -201,7 +201,7 @@ const hasDmg = computed(() => (
                   colorClass="text-blue-500"
                 />
               </td>
-              <td class="align-bottom border-b border-black pb-2 pt-2 pr-8">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(poisonDmg)"
                   :res="monster.poisonRes"
@@ -211,7 +211,7 @@ const hasDmg = computed(() => (
                   colorClass="text-green-600"
                 />
               </td>
-              <td class="align-bottom border-b border-black pb-2 pt-2">
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2">
                 <div class="flex flex-row items-center" :class="{ 'opacity-20': !hasDmg }">
                   <Icon name="ph:sword" />
                   {{
