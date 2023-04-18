@@ -218,7 +218,7 @@ const hasDmg = computed(() => (
                       calcDmg(lightningDmg, monster.lightningRes, 0, 0) +
                       calcDmg(coldDmg, monster.coldRes, 0, 0) +
                       calcDmg(poisonDmg, monster.poisonRes, 0, 0)
-                    )
+                    ).toLocaleString()
                   }}
                   <Icon name="ph:arrow-right" />
                   {{
@@ -228,7 +228,7 @@ const hasDmg = computed(() => (
                       calcDmg(lightningDmg, monster.lightningRes, lightningPierceNonBreaking, lightningPierceBreaking) +
                       calcDmg(coldDmg, monster.coldRes, coldPierceNonBreaking, coldPierceBreaking) +
                       calcDmg(poisonDmg, monster.poisonRes, poisonPierceNonBreaking, poisonPierceBreaking)
-                    )
+                    ).toLocaleString()
                   }}
                 </div>
               </td>
