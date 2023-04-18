@@ -25,11 +25,16 @@ const poisonDmg = ref(0);
 const poisonPierceNonBreaking = ref(0);
 const poisonPierceBreaking = ref(0);
 
+const selectedLevelNames = ref(['Arreat Battlefield'])
+
+const selectedLevels = computed(() => (
+  levels.filter((l) => selectedLevelNames.value.includes(l.displayName))
+))
 const sortedLevels = computed(() => (
-  levels.slice(0).sort((l1, l2) => (
+  selectedLevels.value.slice(0).sort((l1, l2) => (
     l1.tier - l2.tier || l1.displayName.localeCompare(l2.displayName)
   ))
-));
+))
 
 const levelsGroupedByTier = computed(() => (
   levels.reduce((acc, curr) => {
@@ -98,7 +103,11 @@ const hasDmg = computed(() => (
           <h3>Tier {{ tier }}</h3>
           <ul class="ml-2">
             <li v-for="level in levelsInTier">
-              <a class="underline" :href="`#${level.displayName}`">{{ level.displayName }}</a>
+              <label>
+                <input type="checkbox" :value="level.displayName" v-model="selectedLevelNames" class="mr-1">
+                <a v-if="selectedLevelNames.includes(level.displayName)" class="underline" :href="`#${level.displayName}`">{{ level.displayName }}</a>
+                <template v-else>{{ level.displayName }}</template>
+              </label>
             </li>
           </ul>
         </template>
@@ -106,7 +115,7 @@ const hasDmg = computed(() => (
     </div>
 
     <div class="grow pl-2 overflow-y-scroll border-slate-500 border-l-solid border-l">
-      <div v-for="level in sortedLevels" :id="level.displayName" class="mb-8 text-sm">
+      <div v-for="level in sortedLevels" :key="level.displayName" :id="level.displayName" class="mb-8 text-sm">
         <h1 class="text-lg tracking-wide font-bold">
           {{ level.displayName }}
           <span class="text-gray-500 text-md tracking-tight ml-2">Tier {{ level.tier }}</span>
