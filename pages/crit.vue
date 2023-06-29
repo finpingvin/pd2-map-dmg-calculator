@@ -19,6 +19,7 @@ const avgCritDmg = computed(() => (
 
 <template>
   <div class="flex flex-col w-64 m-auto">
+    <h1 class="mt-4">PD2 Crit Calculator</h1>
     <div class="mt-4">
       <div>
         <label for="avgSheetDmg">Average sheet damage</label>
