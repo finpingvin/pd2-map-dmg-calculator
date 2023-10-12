@@ -18,7 +18,7 @@
     <td class="w-16">
       <!-- Phys dmg -->
       <input
-        :value="dmg"
+        :value="dmg"   
         @input="$emit('update:dmg', ($event.target as HTMLInputElement).value || 0)"
         type="text"
         class="w-full text-black text-sm p-1"

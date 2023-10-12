@@ -2,30 +2,33 @@
 import { calcDmg } from '~/utils/calculations';
 import levels from '../maps.json'
 
+const router = useRouter();
+const route = useRoute();
+
 type Levels = typeof levels
 type Level = Levels[number]
 type LevelsGroupedByTier = {
   [key: number]: Levels
 }
 
-const physDmg = ref(0);
-const physPierceNonBreaking = ref(0);
-const physPierceBreaking = ref(0);
-const magicDmg = ref(0);
-const magicPierceNonBreaking = ref(0);
-const magicPierceBreaking = ref(0);
-const fireDmg = ref(0);
-const firePierceNonBreaking = ref(0);
-const firePierceBreaking = ref(0);
-const lightningDmg = ref(0);
-const lightningPierceNonBreaking = ref(0);
-const lightningPierceBreaking = ref(0);
-const coldDmg = ref(0);
-const coldPierceNonBreaking = ref(0);
-const coldPierceBreaking = ref(0);
-const poisonDmg = ref(0);
-const poisonPierceNonBreaking = ref(0);
-const poisonPierceBreaking = ref(0);
+const physDmg = computed(() => parseInt((route.query.pd || '0') as string));
+const physPierceNonBreaking = computed(() => parseInt((route.query.ppnb || '0') as string));
+const physPierceBreaking = computed(() => parseInt((route.query.ppb || '0') as string));
+const magicDmg = computed(() => parseInt((route.query.md || '0') as string));
+const magicPierceNonBreaking = computed(() => parseInt((route.query.mpnb || '0') as string));
+const magicPierceBreaking = computed(() => parseInt((route.query.mpb || '0') as string));
+const fireDmg = computed(() => parseInt((route.query.fd || '0') as string));
+const firePierceNonBreaking = computed(() => parseInt((route.query.fpnb || '0') as string));
+const firePierceBreaking = computed(() => parseInt((route.query.fpb || '0') as string));
+const lightningDmg = computed(() => parseInt((route.query.ld || '0') as string));
+const lightningPierceNonBreaking = computed(() => parseInt((route.query.lpnb || '0') as string));
+const lightningPierceBreaking = computed(() => parseInt((route.query.lpb || '0') as string));
+const coldDmg = computed(() => parseInt((route.query.cd || '0') as string));
+const coldPierceNonBreaking = computed(() => parseInt((route.query.cpnb || '0') as string));
+const coldPierceBreaking = computed(() => parseInt((route.query.cpb || '0') as string));
+const poisonDmg = computed(() => parseInt((route.query.pod || '0') as string));
+const poisonPierceNonBreaking = computed(() => parseInt((route.query.popnb || '0') as string));
+const poisonPierceBreaking = computed(() => parseInt((route.query.popb || '0') as string));
 
 const selectedLevelNames = ref(['Arreat Battlefield'])
 
@@ -50,8 +53,22 @@ const levelsGroupedByTier = computed(() => (
   }, {} as LevelsGroupedByTier)
 ))
 const hasDmg = computed(() => (
-  physDmg.value || magicDmg.value || fireDmg.value || lightningDmg.value || coldDmg.value || poisonDmg.value
+  physDmg.value
+  || magicDmg.value
+  || fireDmg.value
+  || lightningDmg.value
+  || coldDmg.value
+  || poisonDmg.value
 ))
+
+const onQueryParamNumberUpdate = (paramName: string, e: number) => {
+  router.replace({
+    query: {
+      ...route.query,
+      [paramName]: e,
+    }
+  })
+}
 </script>
 
 <template>
@@ -81,34 +98,52 @@ const hasDmg = computed(() => (
           <tbody>
             <ElementEditor
               name="Physical"
-              v-model:dmg.number="physDmg"
-              v-model:pierceNonBreaking.number="physPierceNonBreaking"
-              v-model:pierceBreaking.number="physPierceBreaking" />
+              :dmg="physDmg"
+              @update:dmg="onQueryParamNumberUpdate('pd', $event)"
+              :pierceNonBreaking="physPierceNonBreaking"
+              @update:pierceNonBreaking="onQueryParamNumberUpdate('ppnb', $event)"
+              :pierceBreaking="physPierceBreaking"
+              @update:pierceBreaking="onQueryParamNumberUpdate('ppb', $event)" />
             <ElementEditor
               name="Magic"
-              v-model:dmg.number="magicDmg"
-              v-model:pierceNonBreaking.number="magicPierceNonBreaking"
-              v-model:pierceBreaking.number="magicPierceBreaking" />
+              :dmg="magicDmg"
+              @update:dmg="onQueryParamNumberUpdate('md', $event)"
+              :pierceNonBreaking="magicPierceNonBreaking"
+              @update:pierceNonBreaking="onQueryParamNumberUpdate('mpnb', $event)"
+              :pierceBreaking="magicPierceBreaking"
+              @update:pierceBreaking="onQueryParamNumberUpdate('mpb', $event)" />
             <ElementEditor
               name="Fire"
-              v-model:dmg.number="fireDmg"
-              v-model:pierceNonBreaking.number="firePierceNonBreaking"
-              v-model:pierceBreaking.number="firePierceBreaking" />
+              :dmg="fireDmg"
+              @update:dmg="onQueryParamNumberUpdate('fd', $event)"
+              :pierceNonBreaking="firePierceNonBreaking"
+              @update:pierceNonBreaking="onQueryParamNumberUpdate('fpnb', $event)"
+              :pierceBreaking="firePierceBreaking"
+              @update:pierceBreaking="onQueryParamNumberUpdate('fpb', $event)" />
             <ElementEditor
               name="Lightning"
-              v-model:dmg.number="lightningDmg"
-              v-model:pierceNonBreaking.number="lightningPierceNonBreaking"
-              v-model:pierceBreaking.number="lightningPierceBreaking" />
+              :dmg="lightningDmg"
+              @update:dmg="onQueryParamNumberUpdate('ld', $event)"
+              :pierceNonBreaking="lightningPierceNonBreaking"
+              @update:pierceNonBreaking="onQueryParamNumberUpdate('lpnb', $event)"
+              :pierceBreaking="lightningPierceBreaking"
+              @update:pierceBreaking="onQueryParamNumberUpdate('lpb', $event)" />
             <ElementEditor
               name="Cold"
-              v-model:dmg.number="coldDmg"
-              v-model:pierceNonBreaking.number="coldPierceNonBreaking"
-              v-model:pierceBreaking.number="coldPierceBreaking" />
+              :dmg="coldDmg"
+              @update:dmg="onQueryParamNumberUpdate('cd', $event)"
+              :pierceNonBreaking="coldPierceNonBreaking"
+              @update:pierceNonBreaking="onQueryParamNumberUpdate('cpnb', $event)"
+              :pierceBreaking="coldPierceBreaking"
+              @update:pierceBreaking="onQueryParamNumberUpdate('cpb', $event)" />
             <ElementEditor
               name="Poison"
-              v-model:dmg.number="poisonDmg"
-              v-model:pierceNonBreaking.number="poisonPierceNonBreaking"
-              v-model:pierceBreaking.number="poisonPierceBreaking" />
+              :dmg="poisonDmg"
+              @update:dmg="onQueryParamNumberUpdate('pod', $event)"
+              :pierceNonBreaking="poisonPierceNonBreaking"
+              @update:pierceNonBreaking="onQueryParamNumberUpdate('popnb', $event)"
+              :pierceBreaking="poisonPierceBreaking"
+              @update:pierceBreaking="onQueryParamNumberUpdate('popb', $event)" />
           </tbody>
         </table>
       </form>
@@ -220,6 +255,7 @@ const hasDmg = computed(() => (
                       calcDmg(fireDmg, monster.fireRes, 0, 0) +
                       calcDmg(lightningDmg, monster.lightningRes, 0, 0) +
                       calcDmg(coldDmg, monster.coldRes, 0, 0) +
+                      calcDmg(magicDmg, monster.magicRes, 0, 0) +
                       calcDmg(poisonDmg, monster.poisonRes, 0, 0)
                     ).toLocaleString()
                   }}
