@@ -93,7 +93,7 @@ const levelsGroupedByTier = computed(() => (
   }, {} as LevelsGroupedByTier)
 ))
 const hasDmg = computed(() => {
-  console.log('hasdmg', physDmg.value);
+  console.log('hasdmg', physDmg.value, Boolean(physDmg.value));
   return physDmg.value
   || magicDmg.value
   || fireDmg.value
