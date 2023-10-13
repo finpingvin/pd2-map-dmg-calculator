@@ -92,14 +92,15 @@ const levelsGroupedByTier = computed(() => (
     return acc
   }, {} as LevelsGroupedByTier)
 ))
-const hasDmg = computed(() => (
-  physDmg.value
+const hasDmg = computed(() => {
+  console.log('hasdmg', physDmg.value);
+  return physDmg.value
   || magicDmg.value
   || fireDmg.value
   || lightningDmg.value
   || coldDmg.value
   || poisonDmg.value
-))
+})
 
 const onQueryParamNumberUpdate = (paramName: string, e: number) => {
   router.replace({
