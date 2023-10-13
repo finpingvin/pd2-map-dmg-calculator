@@ -93,7 +93,7 @@ const levelsGroupedByTier = computed(() => (
   }, {} as LevelsGroupedByTier)
 ))
 const hasDmg = computed(() => {
-  console.log('hasdmg', physDmg.value, Boolean(physDmg.value));
+  console.log('hasdmg', Boolean(physDmg.value));
   return physDmg.value
   || magicDmg.value
   || fireDmg.value
@@ -211,7 +211,7 @@ const onQueryParamNumberUpdate = (paramName: string, e: number) => {
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.displayName }}</td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
-                  :active="!hasDmg || Boolean(physDmg)"
+                  :active="!hasDmg || console.log('stuff', Boolean(physDmg)) || Boolean(physDmg)"
                   :res="monster.physRes"
                   :dmg="physDmg"
                   :pierceNonBreaking="physPierceNonBreaking"
