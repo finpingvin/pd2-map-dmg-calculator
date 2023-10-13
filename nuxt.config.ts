@@ -10,4 +10,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
   ],
+  devtools: {
+    enabled: true,
+  },
 })
