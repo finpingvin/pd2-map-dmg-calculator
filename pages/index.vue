@@ -30,6 +30,8 @@ const poisonDmg = ref(0);
 const poisonPierceNonBreaking = ref(0);
 const poisonPierceBreaking = ref(0);
 
+await router.isReady();
+
 physDmg.value = parseInt((route.query.pd || '0') as string);
 physPierceNonBreaking.value = parseInt((route.query.ppnb || '0') as string);
 physPierceBreaking.value = parseInt((route.query.ppb || '0') as string);
@@ -48,6 +50,7 @@ coldPierceBreaking.value = parseInt((route.query.cpb || '0') as string);
 poisonDmg.value = parseInt((route.query.pod || '0') as string);
 poisonPierceNonBreaking.value = parseInt((route.query.popnb || '0') as string);
 poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string);
+
 
 watch(physDmg, (newVal) => onQueryParamNumberUpdate('pd', newVal));
 watch(physPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('ppnb', newVal));
