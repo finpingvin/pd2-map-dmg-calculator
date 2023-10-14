@@ -39,26 +39,7 @@ const poisonDmg = ref(0)
 const poisonPierceNonBreaking = ref(0)
 const poisonPierceBreaking = ref(0)
 
-await router.isReady()
-
-physDmg.value = parseInt((route.query.pd || '0') as string)
-physPierceNonBreaking.value = parseInt((route.query.ppnb || '0') as string)
-physPierceBreaking.value = parseInt((route.query.ppb || '0') as string)
-magicDmg.value = parseInt((route.query.md || '0') as string)
-magicPierceNonBreaking.value = parseInt((route.query.mpnb || '0') as string)
-magicPierceBreaking.value = parseInt((route.query.mpb || '0') as string)
-fireDmg.value = parseInt((route.query.fd || '0') as string)
-firePierceNonBreaking.value = parseInt((route.query.fpnb || '0') as string)
-firePierceBreaking.value = parseInt((route.query.fpb || '0') as string)
-lightningDmg.value = parseInt((route.query.ld || '0') as string)
-lightningPierceNonBreaking.value = parseInt((route.query.lpnb || '0') as string)
-lightningPierceBreaking.value = parseInt((route.query.lpb || '0') as string)
-coldDmg.value = parseInt((route.query.cd || '0') as string)
-coldPierceNonBreaking.value = parseInt((route.query.cpnb || '0') as string)
-coldPierceBreaking.value = parseInt((route.query.cpb || '0') as string)
-poisonDmg.value = parseInt((route.query.pod || '0') as string)
-poisonPierceNonBreaking.value = parseInt((route.query.popnb || '0') as string)
-poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
+// await router.isReady()
 
 watch(physDmg, (newVal) => onQueryParamNumberUpdate('pd', newVal))
 watch(physPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('ppnb', newVal))
@@ -81,12 +62,6 @@ watch(poisonPierceBreaking, (newVal) => onQueryParamNumberUpdate('popb', newVal)
 
 const selectedLevelNames = ref(['Arreat Battlefield'])
 watch(selectedLevelNames, (newVal) => onQueryParamNumberUpdate('l', newVal.join(',')))
-if (!route.query.l) {
-  onQueryParamNumberUpdate('l', selectedLevelNames.value.join(','));
-} else {
-  const levelsFromQuery = (route.query.l as string).split(',')
-  selectedLevelNames.value = levelsFromQuery
-}
 
 const sortLevels = (l1: Level, l2: Level) => (
   l1.tier - l2.tier || l1.displayName.localeCompare(l2.displayName)
@@ -118,7 +93,31 @@ const hasDmg = computed(() => (
 ))
 
 onMounted(() => {
-  console.log('I AM MOUNTING')
+  physDmg.value = parseInt((route.query.pd || '0') as string)
+  physPierceNonBreaking.value = parseInt((route.query.ppnb || '0') as string)
+  physPierceBreaking.value = parseInt((route.query.ppb || '0') as string)
+  magicDmg.value = parseInt((route.query.md || '0') as string)
+  magicPierceNonBreaking.value = parseInt((route.query.mpnb || '0') as string)
+  magicPierceBreaking.value = parseInt((route.query.mpb || '0') as string)
+  fireDmg.value = parseInt((route.query.fd || '0') as string)
+  firePierceNonBreaking.value = parseInt((route.query.fpnb || '0') as string)
+  firePierceBreaking.value = parseInt((route.query.fpb || '0') as string)
+  lightningDmg.value = parseInt((route.query.ld || '0') as string)
+  lightningPierceNonBreaking.value = parseInt((route.query.lpnb || '0') as string)
+  lightningPierceBreaking.value = parseInt((route.query.lpb || '0') as string)
+  coldDmg.value = parseInt((route.query.cd || '0') as string)
+  coldPierceNonBreaking.value = parseInt((route.query.cpnb || '0') as string)
+  coldPierceBreaking.value = parseInt((route.query.cpb || '0') as string)
+  poisonDmg.value = parseInt((route.query.pod || '0') as string)
+  poisonPierceNonBreaking.value = parseInt((route.query.popnb || '0') as string)
+  poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
+
+  if (!route.query.l) {
+  onQueryParamNumberUpdate('l', selectedLevelNames.value.join(','));
+} else {
+  const levelsFromQuery = (route.query.l as string).split(',')
+  selectedLevelNames.value = levelsFromQuery
+}
 })
 </script>
 
