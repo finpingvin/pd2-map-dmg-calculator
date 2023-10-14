@@ -11,7 +11,7 @@ type LevelsGroupedByTier = {
   [key: number]: Levels
 }
 
-const onQueryParamNumberUpdate = (paramName: string, e: any) => {
+const updateQueryParam = (paramName: string, e: any) => {
   router.replace({
     query: {
       ...route.query,
@@ -39,27 +39,29 @@ const poisonDmg = ref(0)
 const poisonPierceNonBreaking = ref(0)
 const poisonPierceBreaking = ref(0)
 
-watch(physDmg, (newVal) => onQueryParamNumberUpdate('pd', newVal))
-watch(physPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('ppnb', newVal))
-watch(physPierceBreaking, (newVal) => onQueryParamNumberUpdate('ppb', newVal))
-watch(magicDmg, (newVal) => onQueryParamNumberUpdate('md', newVal))
-watch(magicPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('mpnb', newVal))
-watch(magicPierceBreaking, (newVal) => onQueryParamNumberUpdate('mpb', newVal))
-watch(fireDmg, (newVal) => onQueryParamNumberUpdate('fd', newVal))
-watch(firePierceNonBreaking, (newVal) => onQueryParamNumberUpdate('fpnb', newVal))
-watch(firePierceBreaking, (newVal) => onQueryParamNumberUpdate('fpb', newVal))
-watch(lightningDmg, (newVal) => onQueryParamNumberUpdate('ld', newVal))
-watch(lightningPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('lpnb', newVal))
-watch(lightningPierceBreaking, (newVal) => onQueryParamNumberUpdate('lpb', newVal))
-watch(coldDmg, (newVal) => onQueryParamNumberUpdate('cd', newVal))
-watch(coldPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('cpnb', newVal))
-watch(coldPierceBreaking, (newVal) => onQueryParamNumberUpdate('cpb', newVal))
-watch(poisonDmg, (newVal) => onQueryParamNumberUpdate('pod', newVal))
-watch(poisonPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('popnb', newVal))
-watch(poisonPierceBreaking, (newVal) => onQueryParamNumberUpdate('popb', newVal))
+watch(physDmg, (newVal) => updateQueryParam('pd', newVal))
+watch(physPierceNonBreaking, (newVal) => updateQueryParam('ppnb', newVal))
+watch(physPierceBreaking, (newVal) => updateQueryParam('ppb', newVal))
+watch(magicDmg, (newVal) => updateQueryParam('md', newVal))
+watch(magicPierceNonBreaking, (newVal) => updateQueryParam('mpnb', newVal))
+watch(magicPierceBreaking, (newVal) => updateQueryParam('mpb', newVal))
+watch(fireDmg, (newVal) => updateQueryParam('fd', newVal))
+watch(firePierceNonBreaking, (newVal) => updateQueryParam('fpnb', newVal))
+watch(firePierceBreaking, (newVal) => updateQueryParam('fpb', newVal))
+watch(lightningDmg, (newVal) => updateQueryParam('ld', newVal))
+watch(lightningPierceNonBreaking, (newVal) => updateQueryParam('lpnb', newVal))
+watch(lightningPierceBreaking, (newVal) => updateQueryParam('lpb', newVal))
+watch(coldDmg, (newVal) => updateQueryParam('cd', newVal))
+watch(coldPierceNonBreaking, (newVal) => updateQueryParam('cpnb', newVal))
+watch(coldPierceBreaking, (newVal) => updateQueryParam('cpb', newVal))
+watch(poisonDmg, (newVal) => updateQueryParam('pod', newVal))
+watch(poisonPierceNonBreaking, (newVal) => updateQueryParam('popnb', newVal))
+watch(poisonPierceBreaking, (newVal) => updateQueryParam('popb', newVal))
 
-const selectedLevelNames = ref(['Arreat Battlefield'])
-watch(selectedLevelNames, (newVal) => onQueryParamNumberUpdate('l', newVal.join(',')))
+const selectedLevelNames = ref([] as Array<string>)
+watch(selectedLevelNames, (newVal) => {
+  updateQueryParam('l', newVal.join(','))
+})
 
 const sortLevels = (l1: Level, l2: Level) => (
   l1.tier - l2.tier || l1.displayName.localeCompare(l2.displayName)
@@ -111,7 +113,7 @@ onMounted(() => {
   poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
 
   if (!route.query.l) {
-    onQueryParamNumberUpdate('l', selectedLevelNames.value.join(','));
+    selectedLevelNames.value = ['Arreat Battlefield']
   } else {
     const levelsFromQuery = (route.query.l as string).split(',')
     selectedLevelNames.value = levelsFromQuery
