@@ -10,5 +10,5 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
   ],
-  ssr: false,
+  // ssr: false,
 })
