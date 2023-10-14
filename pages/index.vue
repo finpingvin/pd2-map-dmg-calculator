@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { calcDmg } from '~/utils/calculations';
+import { calcDmg } from '~/utils/calculations'
 import levels from '../maps.json'
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
 type Levels = typeof levels
 type Level = Levels[number]
@@ -11,66 +11,82 @@ type LevelsGroupedByTier = {
   [key: number]: Levels
 }
 
-const physDmg = ref(0);
-const physPierceNonBreaking = ref(0);
-const physPierceBreaking = ref(0);
-const magicDmg = ref(0);
-const magicPierceNonBreaking = ref(0);
-const magicPierceBreaking = ref(0);
-const fireDmg = ref(0);
-const firePierceNonBreaking = ref(0);
-const firePierceBreaking = ref(0);
-const lightningDmg = ref(0);
-const lightningPierceNonBreaking = ref(0);
-const lightningPierceBreaking = ref(0);
-const coldDmg = ref(0);
-const coldPierceNonBreaking = ref(0);
-const coldPierceBreaking = ref(0);
-const poisonDmg = ref(0);
-const poisonPierceNonBreaking = ref(0);
-const poisonPierceBreaking = ref(0);
-console.log('1', route.query.pd);
-await router.isReady();
-console.log('2', route.query.pd);
-physDmg.value = parseInt((route.query.pd || '0') as string);
-physPierceNonBreaking.value = parseInt((route.query.ppnb || '0') as string);
-physPierceBreaking.value = parseInt((route.query.ppb || '0') as string);
-magicDmg.value = parseInt((route.query.md || '0') as string);
-magicPierceNonBreaking.value = parseInt((route.query.mpnb || '0') as string);
-magicPierceBreaking.value = parseInt((route.query.mpb || '0') as string);
-fireDmg.value = parseInt((route.query.fd || '0') as string);
-firePierceNonBreaking.value = parseInt((route.query.fpnb || '0') as string);
-firePierceBreaking.value = parseInt((route.query.fpb || '0') as string);
-lightningDmg.value = parseInt((route.query.ld || '0') as string);
-lightningPierceNonBreaking.value = parseInt((route.query.lpnb || '0') as string);
-lightningPierceBreaking.value = parseInt((route.query.lpb || '0') as string);
-coldDmg.value = parseInt((route.query.cd || '0') as string);
-coldPierceNonBreaking.value = parseInt((route.query.cpnb || '0') as string);
-coldPierceBreaking.value = parseInt((route.query.cpb || '0') as string);
-poisonDmg.value = parseInt((route.query.pod || '0') as string);
-poisonPierceNonBreaking.value = parseInt((route.query.popnb || '0') as string);
-poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string);
+const onQueryParamNumberUpdate = (paramName: string, e: any) => {
+  router.replace({
+    query: {
+      ...route.query,
+      [paramName]: e,
+    }
+  })
+}
 
-watch(physDmg, (newVal) => onQueryParamNumberUpdate('pd', newVal));
-watch(physPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('ppnb', newVal));
-watch(physPierceBreaking, (newVal) => onQueryParamNumberUpdate('ppb', newVal));
-watch(magicDmg, (newVal) => onQueryParamNumberUpdate('md', newVal));
-watch(magicPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('mpnb', newVal));
-watch(magicPierceBreaking, (newVal) => onQueryParamNumberUpdate('mpb', newVal));
-watch(fireDmg, (newVal) => onQueryParamNumberUpdate('fd', newVal));
-watch(firePierceNonBreaking, (newVal) => onQueryParamNumberUpdate('fpnb', newVal));
-watch(firePierceBreaking, (newVal) => onQueryParamNumberUpdate('fpb', newVal));
-watch(lightningDmg, (newVal) => onQueryParamNumberUpdate('ld', newVal));
-watch(lightningPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('lpnb', newVal));
-watch(lightningPierceBreaking, (newVal) => onQueryParamNumberUpdate('lpb', newVal));
-watch(coldDmg, (newVal) => onQueryParamNumberUpdate('cd', newVal));
-watch(coldPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('cpnb', newVal));
-watch(coldPierceBreaking, (newVal) => onQueryParamNumberUpdate('cpb', newVal));
-watch(poisonDmg, (newVal) => onQueryParamNumberUpdate('pod', newVal));
-watch(poisonPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('popnb', newVal));
-watch(poisonPierceBreaking, (newVal) => onQueryParamNumberUpdate('popb', newVal));
+const physDmg = ref(0)
+const physPierceNonBreaking = ref(0)
+const physPierceBreaking = ref(0)
+const magicDmg = ref(0)
+const magicPierceNonBreaking = ref(0)
+const magicPierceBreaking = ref(0)
+const fireDmg = ref(0)
+const firePierceNonBreaking = ref(0)
+const firePierceBreaking = ref(0)
+const lightningDmg = ref(0)
+const lightningPierceNonBreaking = ref(0)
+const lightningPierceBreaking = ref(0)
+const coldDmg = ref(0)
+const coldPierceNonBreaking = ref(0)
+const coldPierceBreaking = ref(0)
+const poisonDmg = ref(0)
+const poisonPierceNonBreaking = ref(0)
+const poisonPierceBreaking = ref(0)
+
+await router.isReady()
+
+physDmg.value = parseInt((route.query.pd || '0') as string)
+physPierceNonBreaking.value = parseInt((route.query.ppnb || '0') as string)
+physPierceBreaking.value = parseInt((route.query.ppb || '0') as string)
+magicDmg.value = parseInt((route.query.md || '0') as string)
+magicPierceNonBreaking.value = parseInt((route.query.mpnb || '0') as string)
+magicPierceBreaking.value = parseInt((route.query.mpb || '0') as string)
+fireDmg.value = parseInt((route.query.fd || '0') as string)
+firePierceNonBreaking.value = parseInt((route.query.fpnb || '0') as string)
+firePierceBreaking.value = parseInt((route.query.fpb || '0') as string)
+lightningDmg.value = parseInt((route.query.ld || '0') as string)
+lightningPierceNonBreaking.value = parseInt((route.query.lpnb || '0') as string)
+lightningPierceBreaking.value = parseInt((route.query.lpb || '0') as string)
+coldDmg.value = parseInt((route.query.cd || '0') as string)
+coldPierceNonBreaking.value = parseInt((route.query.cpnb || '0') as string)
+coldPierceBreaking.value = parseInt((route.query.cpb || '0') as string)
+poisonDmg.value = parseInt((route.query.pod || '0') as string)
+poisonPierceNonBreaking.value = parseInt((route.query.popnb || '0') as string)
+poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
+
+watch(physDmg, (newVal) => onQueryParamNumberUpdate('pd', newVal))
+watch(physPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('ppnb', newVal))
+watch(physPierceBreaking, (newVal) => onQueryParamNumberUpdate('ppb', newVal))
+watch(magicDmg, (newVal) => onQueryParamNumberUpdate('md', newVal))
+watch(magicPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('mpnb', newVal))
+watch(magicPierceBreaking, (newVal) => onQueryParamNumberUpdate('mpb', newVal))
+watch(fireDmg, (newVal) => onQueryParamNumberUpdate('fd', newVal))
+watch(firePierceNonBreaking, (newVal) => onQueryParamNumberUpdate('fpnb', newVal))
+watch(firePierceBreaking, (newVal) => onQueryParamNumberUpdate('fpb', newVal))
+watch(lightningDmg, (newVal) => onQueryParamNumberUpdate('ld', newVal))
+watch(lightningPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('lpnb', newVal))
+watch(lightningPierceBreaking, (newVal) => onQueryParamNumberUpdate('lpb', newVal))
+watch(coldDmg, (newVal) => onQueryParamNumberUpdate('cd', newVal))
+watch(coldPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('cpnb', newVal))
+watch(coldPierceBreaking, (newVal) => onQueryParamNumberUpdate('cpb', newVal))
+watch(poisonDmg, (newVal) => onQueryParamNumberUpdate('pod', newVal))
+watch(poisonPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('popnb', newVal))
+watch(poisonPierceBreaking, (newVal) => onQueryParamNumberUpdate('popb', newVal))
 
 const selectedLevelNames = ref(['Arreat Battlefield'])
+watch(selectedLevelNames, (newVal) => onQueryParamNumberUpdate('l', newVal.join(',')))
+if (!route.query.l) {
+  onQueryParamNumberUpdate('l', selectedLevelNames.value.join(','));
+} else {
+  const levelsFromQuery = (route.query.l as string).split(',')
+  selectedLevelNames.value = levelsFromQuery
+}
 
 const sortLevels = (l1: Level, l2: Level) => (
   l1.tier - l2.tier || l1.displayName.localeCompare(l2.displayName)
@@ -92,24 +108,14 @@ const levelsGroupedByTier = computed(() => (
     return acc
   }, {} as LevelsGroupedByTier)
 ))
-const hasDmg = computed(() => {
-  console.log('hasdmg', Boolean(physDmg.value));
-  return physDmg.value
+const hasDmg = computed(() => (
+  physDmg.value
   || magicDmg.value
   || fireDmg.value
   || lightningDmg.value
   || coldDmg.value
   || poisonDmg.value
-})
-
-const onQueryParamNumberUpdate = (paramName: string, e: number) => {
-  router.replace({
-    query: {
-      ...route.query,
-      [paramName]: e,
-    }
-  })
-}
+))
 </script>
 
 <template>
