@@ -217,7 +217,7 @@ const hasDmg = computed(() => (
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.displayName }}</td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
-                  :active="!hasDmg || console.log('stuff', Boolean(physDmg)) || Boolean(physDmg)"
+                  :active="!hasDmg || Boolean(physDmg)"
                   :res="monster.physRes"
                   :dmg="physDmg"
                   :pierceNonBreaking="physPierceNonBreaking"
