@@ -116,6 +116,10 @@ const hasDmg = computed(() => (
   || coldDmg.value
   || poisonDmg.value
 ))
+
+onMounted(() => {
+  console.log('I AM MOUNTING')
+})
 </script>
 
 <template>
