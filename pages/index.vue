@@ -39,8 +39,6 @@ const poisonDmg = ref(0)
 const poisonPierceNonBreaking = ref(0)
 const poisonPierceBreaking = ref(0)
 
-// await router.isReady()
-
 watch(physDmg, (newVal) => onQueryParamNumberUpdate('pd', newVal))
 watch(physPierceNonBreaking, (newVal) => onQueryParamNumberUpdate('ppnb', newVal))
 watch(physPierceBreaking, (newVal) => onQueryParamNumberUpdate('ppb', newVal))
@@ -113,11 +111,11 @@ onMounted(() => {
   poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
 
   if (!route.query.l) {
-  onQueryParamNumberUpdate('l', selectedLevelNames.value.join(','));
-} else {
-  const levelsFromQuery = (route.query.l as string).split(',')
-  selectedLevelNames.value = levelsFromQuery
-}
+    onQueryParamNumberUpdate('l', selectedLevelNames.value.join(','));
+  } else {
+    const levelsFromQuery = (route.query.l as string).split(',')
+    selectedLevelNames.value = levelsFromQuery
+  }
 })
 </script>
 
