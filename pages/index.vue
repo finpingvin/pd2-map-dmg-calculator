@@ -213,6 +213,10 @@ onMounted(() => {
                 <th class="text-start text-xs w-20">Cold</th>
                 <th class="text-start text-xs w-20">Poison</th>
                 <th class="text-start text-xs w-20">Sum Damage</th>
+                <th class="text-start text-xs w-20">Monster min hp (Closed bnet)</th>
+                <th class="text-start text-xs w-20">Monster max hp (Closed bnet)</th>
+                <th class="text-start text-xs w-20">Monster min hp (Open bnet)</th>
+                <th class="text-start text-xs w-20">Monster max hp (Open bnet)</th>
             </tr>
           </thead>
           <tbody>
@@ -303,6 +307,10 @@ onMounted(() => {
                   }}
                 </div>
               </td>
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.minHpClosedBnet.toLocaleString() }}</td>
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.maxHpClosedBnet.toLocaleString() }}</td>
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.minHpOpenBnet.toLocaleString() }}</td>
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.maxHpOpenBnet.toLocaleString() }}</td>
             </tr>
           </tbody>
         </table>
