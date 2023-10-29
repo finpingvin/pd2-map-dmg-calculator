@@ -10,6 +10,7 @@ type Level = Levels[number]
 type LevelsGroupedByTier = {
   [key: number]: Levels
 }
+type Monster = Level['monsters'][number]
 
 const updateQueryParam = (paramName: string, e: any) => {
   router.replace({
@@ -91,6 +92,16 @@ const hasDmg = computed(() => (
   || coldDmg.value
   || poisonDmg.value
 ))
+const resultingDmg = (monster: Monster) => (
+  calcDmg(physDmg.value, monster.physRes, physPierceNonBreaking.value, physPierceBreaking.value) +
+  calcDmg(fireDmg.value, monster.fireRes, firePierceNonBreaking.value, firePierceBreaking.value) +
+  calcDmg(lightningDmg.value, monster.lightningRes, lightningPierceNonBreaking.value, lightningPierceBreaking.value) +
+  calcDmg(coldDmg.value, monster.coldRes, coldPierceNonBreaking.value, coldPierceBreaking.value) +
+  calcDmg(poisonDmg.value, monster.poisonRes, poisonPierceNonBreaking.value, poisonPierceBreaking.value)
+);
+const monsterIsDead = (monster: Monster) => (
+  resultingDmg(monster) >= monster.maxHpOpenBnet
+);
 
 onMounted(() => {
   physDmg.value = parseInt((route.query.pd || '0') as string)
@@ -213,10 +224,7 @@ onMounted(() => {
                 <th class="text-start text-xs w-20">Cold</th>
                 <th class="text-start text-xs w-20">Poison</th>
                 <th class="text-start text-xs w-20">Sum Damage</th>
-                <th class="text-start text-xs w-20">Monster min hp (Closed bnet)</th>
-                <th class="text-start text-xs w-20">Monster max hp (Closed bnet)</th>
-                <th class="text-start text-xs w-20">Monster min hp (Open bnet)</th>
-                <th class="text-start text-xs w-20">Monster max hp (Open bnet)</th>
+                <th class="text-start text-xs w-20">Remaining HP (experimental)</th>
             </tr>
           </thead>
           <tbody>
@@ -282,7 +290,7 @@ onMounted(() => {
                   colorClass="text-green-600"
                 />
               </td>
-              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2">
+              <td class="align-middle border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <div class="flex flex-row items-center" :class="{ 'opacity-15': !hasDmg }">
                   <Icon name="ph:sword" />
                   {{
@@ -296,21 +304,17 @@ onMounted(() => {
                     ).toLocaleString()
                   }}
                   <Icon name="ph:arrow-right" />
-                  {{
-                    Math.round(
-                      calcDmg(physDmg, monster.physRes, physPierceNonBreaking, physPierceBreaking) +
-                      calcDmg(fireDmg, monster.fireRes, firePierceNonBreaking, firePierceBreaking) +
-                      calcDmg(lightningDmg, monster.lightningRes, lightningPierceNonBreaking, lightningPierceBreaking) +
-                      calcDmg(coldDmg, monster.coldRes, coldPierceNonBreaking, coldPierceBreaking) +
-                      calcDmg(poisonDmg, monster.poisonRes, poisonPierceNonBreaking, poisonPierceBreaking)
-                    ).toLocaleString()
-                  }}
+                  {{ resultingDmg(monster).toLocaleString() }}
                 </div>
               </td>
-              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.minHpClosedBnet.toLocaleString() }}</td>
-              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.maxHpClosedBnet.toLocaleString() }}</td>
-              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.minHpOpenBnet.toLocaleString() }}</td>
-              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.maxHpOpenBnet.toLocaleString() }}</td>
+              <td class="align-middle border-b border-black dark:border-white pb-2 pt-2">
+                <div class="w-full bg-stone-700 h-3" :title="'Monster HP range: ' + monster.minHpOpenBnet.toLocaleString() + ' - ' + monster.maxHpOpenBnet.toLocaleString()">
+                  <div class="bg-red-700 h-3" :style="{ width: String(Math.max(100 - ((resultingDmg(monster) / monster.maxHpOpenBnet) * 100), 0)) + '%' }"></div>
+                  <div class="w-full flex justify-center -mt-3.5 items-center">
+                    <Icon v-if="monsterIsDead(monster)" name="ph-skull" />
+                  </div>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
