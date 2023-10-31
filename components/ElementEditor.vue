@@ -27,7 +27,7 @@
     </td>
     <td class="w-16">
       <div class="flex relative w-full items-center">
-        <Icon name="ph:percent" class="absolute right-0 pr-1" />
+        <Icon name="ph-percent" class="absolute text-black right-0 pr-1" />
         <!-- Phys pierce non-breaking -->
         <input
           :value="pierceNonBreaking"
@@ -40,7 +40,7 @@
     </td>
     <td class="w-16">
       <div class="flex relative w-full items-center">
-        <Icon name="ph:percent" class="absolute right-0 pr-1" />
+        <Icon name="ph-percent" class="absolute text-black right-0 pr-1" />
         <!-- Phys pierce breaking -->
         <input
           :value="pierceBreaking"

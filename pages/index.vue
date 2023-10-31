@@ -40,6 +40,8 @@ const poisonDmg = ref(0)
 const poisonPierceNonBreaking = ref(0)
 const poisonPierceBreaking = ref(0)
 
+const increasedMaximumHp = ref(0);
+
 watch(physDmg, (newVal) => updateQueryParam('pd', newVal))
 watch(physPierceNonBreaking, (newVal) => updateQueryParam('ppnb', newVal))
 watch(physPierceBreaking, (newVal) => updateQueryParam('ppb', newVal))
@@ -58,6 +60,8 @@ watch(coldPierceBreaking, (newVal) => updateQueryParam('cpb', newVal))
 watch(poisonDmg, (newVal) => updateQueryParam('pod', newVal))
 watch(poisonPierceNonBreaking, (newVal) => updateQueryParam('popnb', newVal))
 watch(poisonPierceBreaking, (newVal) => updateQueryParam('popb', newVal))
+
+watch(increasedMaximumHp, (newVal) => updateQueryParam('imhp', newVal))
 
 const selectedLevelNames = ref([] as Array<string>)
 watch(selectedLevelNames, (newVal) => {
@@ -99,8 +103,14 @@ const resultingDmg = (monster: Monster) => (
   calcDmg(coldDmg.value, monster.coldRes, coldPierceNonBreaking.value, coldPierceBreaking.value) +
   calcDmg(poisonDmg.value, monster.poisonRes, poisonPierceNonBreaking.value, poisonPierceBreaking.value)
 );
+const monsterMaxHp = (monster: Monster) => (
+  monster.maxHpOpenBnet * (1 + (increasedMaximumHp.value / 100))
+);
 const monsterIsDead = (monster: Monster) => (
-  resultingDmg(monster) >= monster.maxHpOpenBnet
+  resultingDmg(monster) >= monsterMaxHp(monster)
+);
+const monsterPercentDmg = (monster: Monster) => (
+  (resultingDmg(monster) / monsterMaxHp(monster)) * 100
 );
 
 onMounted(() => {
@@ -122,6 +132,8 @@ onMounted(() => {
   poisonDmg.value = parseInt((route.query.pod || '0') as string)
   poisonPierceNonBreaking.value = parseInt((route.query.popnb || '0') as string)
   poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
+
+  increasedMaximumHp.value = parseInt((route.query.imhp || '0') as string)
 
   if (!route.query.l) {
     selectedLevelNames.value = ['Arreat Battlefield']
@@ -187,6 +199,28 @@ onMounted(() => {
               v-model:dmg.number="poisonDmg"
               v-model:pierceNonBreaking.number="poisonPierceNonBreaking"
               v-model:pierceBreaking.number="poisonPierceBreaking" />
+          </tbody>
+        </table>
+        <table class="table-auto text-sm w-full mt-6">
+          <thead>
+            <tr class="tracking-tight text-xs">
+              <th class="text-left">Increased maximum HP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="flex relative w-16 items-center">
+                  <Icon name="ph-percent" class="absolute text-black right-0 pr-1" />
+                  <input
+                    v-model="increasedMaximumHp"
+                    type="text"
+                    class="w-full text-black text-sm p-1 pr-4"
+                    inputmode="numeric"
+                    pattern="[0-9]*">
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </form>
@@ -308,10 +342,11 @@ onMounted(() => {
                 </div>
               </td>
               <td class="align-middle border-b border-black dark:border-white pb-2 pt-2">
-                <div class="w-full bg-stone-700 h-3" :title="'Monster HP range: ' + monster.minHpOpenBnet.toLocaleString() + ' - ' + monster.maxHpOpenBnet.toLocaleString()">
-                  <div class="bg-red-700 h-3" :style="{ width: String(Math.max(100 - ((resultingDmg(monster) / monster.maxHpOpenBnet) * 100), 0)) + '%' }"></div>
-                  <div class="w-full flex justify-center -mt-3.5 items-center">
+                <div class="w-full bg-stone-700 h-4" :title="'Monster HP range: ' + monster.minHpOpenBnet.toLocaleString() + ' - ' + Math.round(monsterMaxHp(monster)).toLocaleString()">
+                  <div class="bg-red-700 h-4" :style="{ width: String(Math.max(100 - monsterPercentDmg(monster), 0)) + '%' }"></div>
+                  <div class="w-full flex justify-center -mt-4 items-center">
                     <Icon v-if="monsterIsDead(monster)" name="ph-skull" />
+                    <div class="text-xs" v-else>{{ Math.round(100 - monsterPercentDmg(monster)) }}%</div>
                   </div>
                 </div>
               </td>
