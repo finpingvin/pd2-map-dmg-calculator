@@ -98,6 +98,7 @@ const hasDmg = computed(() => (
 ))
 const resultingDmg = (monster: Monster) => (
   calcDmg(physDmg.value, monster.physRes, physPierceNonBreaking.value, physPierceBreaking.value) +
+  calcDmg(magicDmg.value, monster.magicRes, magicPierceNonBreaking.value, magicPierceBreaking.value) +
   calcDmg(fireDmg.value, monster.fireRes, firePierceNonBreaking.value, firePierceBreaking.value) +
   calcDmg(lightningDmg.value, monster.lightningRes, lightningPierceNonBreaking.value, lightningPierceBreaking.value) +
   calcDmg(coldDmg.value, monster.coldRes, coldPierceNonBreaking.value, coldPierceBreaking.value) +
