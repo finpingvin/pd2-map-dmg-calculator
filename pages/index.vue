@@ -40,7 +40,8 @@ const poisonDmg = ref(0)
 const poisonPierceNonBreaking = ref(0)
 const poisonPierceBreaking = ref(0)
 
-const increasedMaximumHp = ref(0);
+const increasedMaximumHp = ref(0)
+const fortification = ref(false)
 
 watch(physDmg, (newVal) => updateQueryParam('pd', newVal))
 watch(physPierceNonBreaking, (newVal) => updateQueryParam('ppnb', newVal))
@@ -62,6 +63,8 @@ watch(poisonPierceNonBreaking, (newVal) => updateQueryParam('popnb', newVal))
 watch(poisonPierceBreaking, (newVal) => updateQueryParam('popb', newVal))
 
 watch(increasedMaximumHp, (newVal) => updateQueryParam('imhp', newVal))
+// Cast to number
+watch(fortification, (newVal) => updateQueryParam('f', Number(newVal)))
 
 const selectedLevelNames = ref([] as Array<string>)
 watch(selectedLevelNames, (newVal) => {
@@ -104,9 +107,10 @@ const resultingDmg = (monster: Monster) => (
   calcDmg(coldDmg.value, monster.coldRes, coldPierceNonBreaking.value, coldPierceBreaking.value) +
   calcDmg(poisonDmg.value, monster.poisonRes, poisonPierceNonBreaking.value, poisonPierceBreaking.value)
 );
-const monsterMaxHp = (monster: Monster) => (
-  monster.maxHpOpenBnet * (1 + (increasedMaximumHp.value / 100))
-);
+const monsterMaxHp = (monster: Monster) => {
+  const fortificationFactor = fortification.value ? 2 : 1
+  return monster.maxHpOpenBnet * fortificationFactor * (1 + (increasedMaximumHp.value / 100))
+};
 const monsterIsDead = (monster: Monster) => (
   resultingDmg(monster) >= monsterMaxHp(monster)
 );
@@ -135,6 +139,7 @@ onMounted(() => {
   poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
 
   increasedMaximumHp.value = parseInt((route.query.imhp || '0') as string)
+  fortification.value = Boolean(parseInt((route.query.f || '0') as string))
 
   if (!route.query.l) {
     selectedLevelNames.value = ['Arreat Battlefield']
@@ -202,14 +207,25 @@ onMounted(() => {
               v-model:pierceBreaking.number="poisonPierceBreaking" />
           </tbody>
         </table>
+
         <table class="table-auto text-sm w-full mt-6">
           <thead>
             <tr class="tracking-tight text-xs">
-              <th class="text-left">Increased maximum HP</th>
+              <th class="text-left">Map mods</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td>
+                <label for="fortification-control">Fortification</label>
+              </td>
+              <td>
+                <input type="checkbox" id="fortification-control" v-model="fortification" class="mr-1">
+              </td>
+            </tr>
+            <tr>
+              <td>Increased max HP</td>
               <td>
                 <div class="flex relative w-16 items-center">
                   <Icon name="ph-percent" class="absolute text-black right-0 pr-1" />
