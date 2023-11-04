@@ -366,6 +366,7 @@ onMounted(() => {
                     <div class="text-xs" v-else>{{ Math.round(100 - monsterPercentDmg(monster)) }}%</div>
                   </div>
                 </div>
+                <div class="pt-1 text-xs">{{ monsterMaxHp(monster).toLocaleString() }} Max HP</div>
               </td>
             </tr>
           </tbody>
