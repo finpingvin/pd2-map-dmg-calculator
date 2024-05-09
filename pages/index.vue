@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calcDmg } from '~/utils/calculations'
+import { calcDmg, ElementalDmgType } from '~/utils/calculations'
 import levels from '../maps.json'
 
 const router = useRouter()
@@ -40,6 +40,7 @@ const poisonDmg = ref(0)
 const poisonPierceNonBreaking = ref(0)
 const poisonPierceBreaking = ref(0)
 
+const plr = ref(false);
 const increasedMaximumHp = ref(0)
 const fortification = ref(false)
 
@@ -64,6 +65,7 @@ watch(poisonPierceBreaking, (newVal) => updateQueryParam('popb', newVal))
 
 watch(increasedMaximumHp, (newVal) => updateQueryParam('imhp', newVal))
 // Cast to number
+watch(plr, (newVal) => updateQueryParam('plr', Number(newVal)))
 watch(fortification, (newVal) => updateQueryParam('f', Number(newVal)))
 
 const selectedLevelNames = ref([] as Array<string>)
@@ -100,12 +102,12 @@ const hasDmg = computed(() => (
   || poisonDmg.value
 ))
 const resultingDmg = (monster: Monster) => (
-  calcDmg(physDmg.value, monster.physRes, physPierceNonBreaking.value, physPierceBreaking.value) +
-  calcDmg(magicDmg.value, monster.magicRes, magicPierceNonBreaking.value, magicPierceBreaking.value) +
-  calcDmg(fireDmg.value, monster.fireRes, firePierceNonBreaking.value, firePierceBreaking.value) +
-  calcDmg(lightningDmg.value, monster.lightningRes, lightningPierceNonBreaking.value, lightningPierceBreaking.value) +
-  calcDmg(coldDmg.value, monster.coldRes, coldPierceNonBreaking.value, coldPierceBreaking.value) +
-  calcDmg(poisonDmg.value, monster.poisonRes, poisonPierceNonBreaking.value, poisonPierceBreaking.value)
+  calcDmg(physDmg.value, monster.physRes, physPierceNonBreaking.value, physPierceBreaking.value, ElementalDmgType.Physical, plr.value) +
+  calcDmg(magicDmg.value, monster.magicRes, magicPierceNonBreaking.value, magicPierceBreaking.value, ElementalDmgType.Magic, plr.value) +
+  calcDmg(fireDmg.value, monster.fireRes, firePierceNonBreaking.value, firePierceBreaking.value, ElementalDmgType.Fire, plr.value) +
+  calcDmg(lightningDmg.value, monster.lightningRes, lightningPierceNonBreaking.value, lightningPierceBreaking.value, ElementalDmgType.Lightning, plr.value) +
+  calcDmg(coldDmg.value, monster.coldRes, coldPierceNonBreaking.value, coldPierceBreaking.value, ElementalDmgType.Cold, plr.value) +
+  calcDmg(poisonDmg.value, monster.poisonRes, poisonPierceNonBreaking.value, poisonPierceBreaking.value, ElementalDmgType.Poison, plr.value)
 );
 const monsterMaxHp = (monster: Monster) => {
   const fortificationFactor = fortification.value ? 2 : 1
@@ -139,6 +141,7 @@ onMounted(() => {
   poisonPierceBreaking.value = parseInt((route.query.popb || '0') as string)
 
   increasedMaximumHp.value = parseInt((route.query.imhp || '0') as string)
+  plr.value = Boolean(parseInt((route.query.plr || '0') as string))
   fortification.value = Boolean(parseInt((route.query.f || '0') as string))
 
   if (!route.query.l) {
@@ -162,6 +165,9 @@ onMounted(() => {
 
         <dt class="font-bold mt-2">Breaking pierce</dt>
         <dd class="ml-4">The sum of pierce that <em>does</em> break immunities (e.g. Conviction)</dd>
+        
+        <dt class="font-bold mt-2">PLR</dt>
+        <dd class="ml-4">Poison length reduced by %, modifies the length for which poison damage is applied by a percentage. Negative PLR increases poison length.</dd>
       </dl>
 
       <form class="mt-6">
@@ -205,6 +211,19 @@ onMounted(() => {
               v-model:dmg.number="poisonDmg"
               v-model:pierceNonBreaking.number="poisonPierceNonBreaking"
               v-model:pierceBreaking.number="poisonPierceBreaking" />
+          </tbody>
+        </table>
+
+        <table class="table-auto text-sm w-full mt-6">
+          <tbody>
+            <tr>
+              <td>
+                <label for="plr-control">Enable PLR</label>
+              </td>
+              <td class="w-16">
+                <input type="checkbox" id="plr-control" v-model="plr" class="mr-1">
+              </td>
+            </tr>
           </tbody>
         </table>
 
@@ -289,6 +308,8 @@ onMounted(() => {
                   :pierceNonBreaking="physPierceNonBreaking"
                   :pierceBreaking="physPierceBreaking"
                   colorClass="text-stone-500 dark:text-stone-400"
+                  :elemental-dmg-type="ElementalDmgType.Physical"
+                  :consider-plr="plr"
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -299,6 +320,8 @@ onMounted(() => {
                   :pierceNonBreaking="magicPierceNonBreaking"
                   :pierceBreaking="magicPierceBreaking"
                   colorClass="text-violet-500"
+                  :elemental-dmg-type="ElementalDmgType.Magic"
+                  :consider-plr="plr"
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -309,6 +332,8 @@ onMounted(() => {
                   :pierceNonBreaking="firePierceNonBreaking"
                   :pierceBreaking="firePierceBreaking"
                   colorClass="text-red-500"
+                  :elemental-dmg-type="ElementalDmgType.Fire"
+                  :consider-plr="plr"
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -319,6 +344,8 @@ onMounted(() => {
                   :pierceNonBreaking="lightningPierceNonBreaking"
                   :pierceBreaking="lightningPierceBreaking"
                   colorClass="text-yellow-600"
+                  :elemental-dmg-type="ElementalDmgType.Lightning"
+                  :consider-plr="plr"
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -329,6 +356,8 @@ onMounted(() => {
                   :pierceNonBreaking="coldPierceNonBreaking"
                   :pierceBreaking="coldPierceBreaking"
                   colorClass="text-blue-500"
+                  :elemental-dmg-type="ElementalDmgType.Cold"
+                  :consider-plr="plr"
                 />
               </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -339,6 +368,8 @@ onMounted(() => {
                   :pierceNonBreaking="poisonPierceNonBreaking"
                   :pierceBreaking="poisonPierceBreaking"
                   colorClass="text-green-600"
+                  :elemental-dmg-type="ElementalDmgType.Poison"
+                  :consider-plr="plr"
                 />
               </td>
               <td class="align-middle border-b border-black dark:border-white pb-2 pt-2 pr-8">
@@ -346,12 +377,12 @@ onMounted(() => {
                   <Icon name="ph:sword" />
                   {{
                     Math.round(
-                      calcDmg(physDmg, monster.physRes, 0, 0) +
-                      calcDmg(fireDmg, monster.fireRes, 0, 0) +
-                      calcDmg(lightningDmg, monster.lightningRes, 0, 0) +
-                      calcDmg(coldDmg, monster.coldRes, 0, 0) +
-                      calcDmg(magicDmg, monster.magicRes, 0, 0) +
-                      calcDmg(poisonDmg, monster.poisonRes, 0, 0)
+                      calcDmg(physDmg, monster.physRes, 0, 0, ElementalDmgType.Physical, plr) +
+                      calcDmg(fireDmg, monster.fireRes, 0, 0, ElementalDmgType.Fire, plr) +
+                      calcDmg(lightningDmg, monster.lightningRes, 0, 0, ElementalDmgType.Lightning, plr) +
+                      calcDmg(coldDmg, monster.coldRes, 0, 0, ElementalDmgType.Cold, plr) +
+                      calcDmg(magicDmg, monster.magicRes, 0, 0, ElementalDmgType.Magic, plr) +
+                      calcDmg(poisonDmg, monster.poisonRes, 0, 0, ElementalDmgType.Poison, plr)
                     ).toLocaleString()
                   }}
                   <Icon name="ph:arrow-right" />

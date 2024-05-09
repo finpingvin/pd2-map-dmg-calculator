@@ -1,3 +1,12 @@
+export enum ElementalDmgType {
+  Physical,
+  Magic,
+  Fire,
+  Lightning,
+  Cold,
+  Poison,
+}
+
 export function calcRes(res: number, pierceNonBreaking: number = 0, pierceBreaking: number = 0): number {
   let resAfterImmunityRemoval = res;
   if (res > 99) {
@@ -20,13 +29,24 @@ export function calcRes(res: number, pierceNonBreaking: number = 0, pierceBreaki
   return resAfterImmunityRemoval - pierceNonBreaking
 }
 
-export function calcDmg(dmg: number, res: number, pierceNonBreaking: number, pierceBreaking: number): number {
+export function calcDmg(
+  dmg: number,
+  res: number,
+  pierceNonBreaking: number,
+  pierceBreaking: number,
+  elementalDmgType: ElementalDmgType,
+  considerPlr: boolean,
+): number {
   const resAfterPierce = calcRes(res, pierceNonBreaking, pierceBreaking)
   if (resAfterPierce > 99) {
     return 0
   }
   if (resAfterPierce < 0) {
-    return Math.abs(dmg * (-1 + (resAfterPierce / 100)))
+    const dmgAfterPierce = dmg * (1 + (Math.abs(resAfterPierce) / 100))
+    if (elementalDmgType === ElementalDmgType.Poison && considerPlr) {
+      return dmgAfterPierce * (1 + (Math.min(Math.abs(resAfterPierce), 100) / 100))
+    }
+    return dmgAfterPierce
   }
-  return dmg * (1 - (resAfterPierce / 100))
+  return  dmg * (1 - (resAfterPierce / 100))
 }

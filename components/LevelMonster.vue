@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calcRes, calcDmg } from '../utils/calculations'
+import { calcRes, calcDmg, ElementalDmgType } from '../utils/calculations'
 
 const props = withDefaults(defineProps<{
   res: number;
@@ -8,6 +8,8 @@ const props = withDefaults(defineProps<{
   pierceBreaking: number;
   colorClass: string;
   active: boolean;
+  elementalDmgType: ElementalDmgType;
+  considerPlr: boolean;
 }>(), {
   active: true,
 });
@@ -32,11 +34,11 @@ const immuneAfterPierce = computed(() => resAfterPierce.value > 99)
     <div class="flex flex-row items-center" :class="{ 'opacity-15': active && !dmg }">
       <Icon name="ph:sword" />
       <span>{{ Math.round(
-        calcDmg(dmg, res, 0, 0)
+        calcDmg(dmg, res, 0, 0, elementalDmgType, considerPlr)
       ).toLocaleString() }}</span>
       <Icon name="ph:arrow-right" :class="{ 'opacity-15': active && !pierceNonBreaking && !pierceBreaking }" />
       <span :class="{ 'opacity-15': active && !pierceNonBreaking && !pierceBreaking }">{{ Math.round(
-        calcDmg(dmg, res, pierceNonBreaking, pierceBreaking)
+        calcDmg(dmg, res, pierceNonBreaking, pierceBreaking, elementalDmgType, considerPlr)
       ).toLocaleString() }}</span>
     </div>
   </div>
