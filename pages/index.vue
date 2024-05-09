@@ -167,7 +167,7 @@ onMounted(() => {
         <dd class="ml-4">The sum of pierce that <em>does</em> break immunities (e.g. Conviction)</dd>
         
         <dt class="font-bold mt-2">PLR</dt>
-        <dd class="ml-4">Poison length reduced by %, modifies the length for which poison damage is applied by a percentage. Negative PLR increases poison length.</dd>
+        <dd class="ml-4">Poison length reduced by %. Negative PLR increases poison length.</dd>
       </dl>
 
       <form class="mt-6">
