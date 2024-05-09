@@ -41,12 +41,16 @@ export function calcDmg(
   if (resAfterPierce > 99) {
     return 0
   }
+
+  let dmgAfterPierce;
   if (resAfterPierce < 0) {
-    const dmgAfterPierce = dmg * (1 + (Math.abs(resAfterPierce) / 100))
-    if (elementalDmgType === ElementalDmgType.Poison && considerPlr) {
-      return dmgAfterPierce * (1 + (Math.min(Math.abs(resAfterPierce), 100) / 100))
-    }
-    return dmgAfterPierce
+    dmgAfterPierce = dmg * (1 + (Math.abs(resAfterPierce) / 100))
+  } else {
+    dmgAfterPierce = dmg * (1 - (resAfterPierce / 100))
   }
-  return  dmg * (1 - (resAfterPierce / 100))
+
+  if (elementalDmgType === ElementalDmgType.Poison && considerPlr) {
+    return dmgAfterPierce * (1 + (Math.min(Math.abs(pierceNonBreaking / 2), 100) / 100))
+  }
+  return dmgAfterPierce
 }

@@ -218,7 +218,7 @@ onMounted(() => {
           <tbody>
             <tr>
               <td>
-                <label for="plr-control">Enable PLR</label>
+                <label for="plr-control">Enable PLR (experimental)</label>
               </td>
               <td class="w-16">
                 <input type="checkbox" id="plr-control" v-model="plr" class="mr-1">
