@@ -120,6 +120,12 @@ const monsterPercentDmg = (monster: Monster) => (
   (resultingDmg(monster) / monsterMaxHp(monster)) * 100
 );
 
+const monsterTypeDisplayName = (monster: Monster) => {
+  const firstLetter = monster.monsterType.charAt(0);
+  const rest = monster.monsterType.slice(1);
+  return `${firstLetter.toUpperCase()}${rest.toLowerCase()}`;
+}
+
 onMounted(() => {
   physDmg.value = parseInt((route.query.pd || '0') as string)
   physPierceNonBreaking.value = parseInt((route.query.ppnb || '0') as string)
@@ -299,7 +305,12 @@ onMounted(() => {
           </thead>
           <tbody>
             <tr v-for="monster in level.monsters" :key="monster.displayName">
-              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">{{ monster.displayName }}</td>
+              <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
+                <div class="flex flex-col">
+                  <span>{{ monster.displayName }}</span>
+                  <small>{{ monsterTypeDisplayName(monster) }}</small>
+                </div>
+              </td>
               <td class="align-bottom border-b border-black dark:border-white pb-2 pt-2 pr-8">
                 <LevelMonster
                   :active="!hasDmg || Boolean(physDmg)"
