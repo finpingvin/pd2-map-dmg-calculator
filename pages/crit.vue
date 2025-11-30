@@ -73,6 +73,7 @@ const avgCritDmg = computed(() => (
     <div class="mt-6">
       <h3 class="text-md font-bold">Result</h3>
       <table>
+        <tbody>
         <tr>
           <td class="pr-2">Crit chance</td>
           <td>{{ Math.round(critChance * 100).toLocaleString() }}%</td>
@@ -85,6 +86,7 @@ const avgCritDmg = computed(() => (
           <td class="pr-2">Average total damage</td>
           <td>{{ (Math.round(avgSheetDmg) + Math.round(avgCritDmg)).toLocaleString() }}</td>
         </tr>
+        </tbody>
       </table>
 
       <dl class="text-sm mt-6">
